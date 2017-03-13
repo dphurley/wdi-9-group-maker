@@ -29,7 +29,20 @@ $(function () {
         $("#student-names").html(studentNamesDOMElement);
     }
 
+    function randomizeStudentList () {
+        students.sort(function(){return 0.5 - Math.random()});
+    }
+
+    // function determineStudentsToDisplay () {
+    //
+    // }
+
     $("#next-group-button").on("click", function () {
+
+        randomizeStudentList();
+        console.log(students);
+
+        // var studentsToDisplay = determineStudentsToDisplay();
 
         var studentNamesDOMElement = buildStudentNamesDOMElement(students);
         displayStudentNames(studentNamesDOMElement);
