@@ -2,38 +2,23 @@ $(function () {
 
     // CONFIG
     var students = [
-        { id: 1, name: "Alex Gadd", available: true },
-        { id: 2, name: "Aylin McGinnis", available: true },
-        { id: 3, name: "Blake Smith", available: true },
-        { id: 4, name: "Brandon King", available: true },
-        { id: 5, name: "Jibril Sulaiman II", available: true },
-        { id: 6, name: "Charles Wilkinson", available: true },
-        { id: 7, name: "Dan Milo", available: true },
-        { id: 8, name: "David Hernquist", available: true },
-        { id: 9, name: "Dee Davis", available: true },
-        { id: 10, name: "Erin Martin", available: true },
-        { id: 11, name: "Felicia Garcia", available: true },
-        { id: 12, name: "Harry Karambizi", available: true },
-        { id: 13, name: "Hassan Masroor", available: true },
-        { id: 14, name: "Jacob Butler", available: true },
-        { id: 15, name: "Josh Seipel", available: true },
-        { id: 16, name: "Joy Sutton", available: true },
-        { id: 17, name: "Julian Ireland Chandler", available: true },
-        { id: 18, name: "Lanchana Shivananda", available: true },
-        { id: 19, name: "Liam Robinson", available: true },
-        { id: 20, name: "Maggie Kinney", available: true },
-        { id: 21, name: "Matt Atkins", available: true },
-        { id: 22, name: "Michael Torres", available: true },
-        { id: 23, name: "Neil Morris", available: true },
-        { id: 24, name: "Peter Colella", available: true },
-        { id: 25, name: "Randy Galeano", available: true },
-        { id: 26, name: "Ray Meibaum", available: true },
-        { id: 27, name: "Rush Myers", available: true },
-        { id: 28, name: "Sungmin Ro", available: true }
+        {id: 1, name: "Ashley Corry", available: true},
+        {id: 2, name: "Benjamin Floyd", available: true},
+        {id: 3, name: "Christopher McClain", available: true},
+        {id: 4, name: "Christy Bartholomew", available: true},
+        {id: 5, name: "Clark Waite", available: true},
+        {id: 6, name: "Jeffrey Henneberg", available: true},
+        {id: 7, name: "Monica Grages", available: true},
+        {id: 8, name: "Nicholas DeSantis", available: true},
+        {id: 9, name: "Sarah Moore", available: true},
+        {id: 10, name: "Shelbi Pinkney", available: true},
+        {id: 11, name: "William Rausch", available: true},
+        {id: 12, name: "Yeni Nomezqui", available: true},
+        {id: 13, name: "Kate Montha", available: true}
     ];
     randomizeStudentList();
 
-    var numberOfGroups = 5;
+    var numberOfGroups = 3;
     var numberPerGroup = Math.floor(students.length / numberOfGroups);
     var remainderStudents = students.length % numberOfGroups;
     // END CONFIG
@@ -41,17 +26,17 @@ $(function () {
     var groupNumber = 0;
     displayGroupNumber();
 
-    function displayGroupNumber () {
-        if(groupNumber > 0) {
+    function displayGroupNumber() {
+        if (groupNumber > 0) {
             $("#group-id").html(groupNumber);
         }
     }
 
-    function updateGroupNumber () {
+    function updateGroupNumber() {
         groupNumber++;
     }
 
-    function buildStudentNamesDOMElement (students) {
+    function buildStudentNamesDOMElement(students) {
         var studentNamesDOMElement = ["<div>"];
 
         students.forEach(function (student) {
@@ -65,15 +50,17 @@ $(function () {
         return studentNamesDOMElement.join("");
     }
 
-    function displayStudentNames (studentNamesDOMElement) {
+    function displayStudentNames(studentNamesDOMElement) {
         $("#student-names").html(studentNamesDOMElement);
     }
 
-    function randomizeStudentList () {
-        students.sort(function(){return 0.5 - Math.random()});
+    function randomizeStudentList() {
+        students.sort(function () {
+            return 0.5 - Math.random()
+        });
     }
 
-    function determineStudentsToDisplay () {
+    function determineStudentsToDisplay() {
         var studentsToDisplay = [];
 
         var availableStudents = students.filter(function (student) {
@@ -83,7 +70,7 @@ $(function () {
         var addOneOrZero = remainderStudents > 0 ? 1 : 0;
         var numberOfStudentsForThisGroup = numberPerGroup + addOneOrZero;
 
-        for(var i = 0; i < numberOfStudentsForThisGroup; i++) {
+        for (var i = 0; i < numberOfStudentsForThisGroup; i++) {
             studentsToDisplay.push(availableStudents[i]);
         }
 
@@ -91,8 +78,18 @@ $(function () {
         return studentsToDisplay;
     }
 
-    function decrementRemainderStudents () {
-        if(remainderStudents > 0) remainderStudents--;
+    function decrementRemainderStudents() {
+        if (remainderStudents > 0) remainderStudents--;
+    }
+
+    function markDisplayedStudentsAsUnavailable(displayedStudents) {
+        displayedStudents.forEach(function (displayedStudent) {
+            var studentToMarkUnavailable = students.find(function (student) {
+                return student.id === displayedStudent.id;
+            });
+
+            studentToMarkUnavailable.available = false;
+        });
     }
 
     $("#next-group-button").on("click", function () {
@@ -104,7 +101,7 @@ $(function () {
         var studentNamesDOMElement = buildStudentNamesDOMElement(studentsToDisplay);
         displayStudentNames(studentNamesDOMElement);
 
-        //then mark students that have been displayed as unavailable
+        markDisplayedStudentsAsUnavailable(studentsToDisplay);
 
     });
 
